@@ -35,8 +35,7 @@ class Alie:
 
     def __repr__(self):  # pragma: no cover
         """Show all configurations in `settings_json`."""
-        items = list(self.read().items())
-        items.sort(key=lambda i: i[1].get('is_function'))
+        items = self.items
         ret = click.style(f'[{len(items)} registered]', fg='green')
         ret = click.style(f'\nalie {ret}\n\n', fg='cyan')
 
@@ -56,6 +55,13 @@ class Alie:
     def settings_aliases(self):
         """Path to aliases file."""
         return getenv('ALIE_ALIASES_PATH', self._settings_aliases)
+
+    @property
+    def items(self):
+        """Return sorted items."""
+        items = list(self.read().items())
+        items.sort(key=lambda i: i[1].get('is_function'))
+        return items
 
     def read(self):
         """Read settings.json."""
@@ -90,11 +96,11 @@ class Alie:
     def load(self):
         """Write aliases and reload bash profile."""
         with open(self.settings_aliases, 'w') as f:
-            for i, j in self.read().items():
+            for i, j in self.items:
                 target = j['target']
 
                 if j['is_function']:
-                    f.write(f"function {i} () {{ {target} }} \n")
+                    f.write(f"\nfunction {i} () {{\n    {target}\n}}\n")
                 else:
                     f.write(f"alias {i}='{target}'\n")
 
