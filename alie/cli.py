@@ -36,11 +36,14 @@ class Alie:
     def __repr__(self):  # pragma: no cover
         """Show all configurations in `settings_json`."""
         items = list(self.read().items())
+        items.sort(key=lambda i: i[1].get('is_function'))
         ret = click.style(f'[{len(items)} registered]', fg='green')
         ret = click.style(f'\nalie {ret}\n\n', fg='cyan')
 
         for i, j in items:
-            ret += click.style(f'\t{i}', fg='magenta') + f'={j}\n'
+            atype = 'function' if j['is_function'] else 'alias'
+            ret += click.style(f'\t{atype} ', fg='blue')
+            ret += click.style(f'{i}', fg='magenta') + f'={j["target"]}\n'
 
         return ret
 
@@ -62,12 +65,12 @@ class Alie:
         except:  # pylint: disable=W0702
             return {}
 
-    def write(self, name, value):
+    def write(self, name, value, is_function=False):
         """Write key, value to settings.json."""
         data = self.read()
 
         with open(self.settings_json, 'w') as f:
-            data[name] = value
+            data[name] = {'target': value, 'is_function': is_function}
             json.dump(data, f, indent=4, sort_keys=True)
 
         self.load()
@@ -88,14 +91,20 @@ class Alie:
         """Write aliases and reload bash profile."""
         with open(self.settings_aliases, 'w') as f:
             for i, j in self.read().items():
-                f.write(f"alias {i}='{j}'\n")
+                target = j['target']
+
+                if j['is_function']:
+                    f.write(f"function {i} () {{ {target} }} \n")
+                else:
+                    f.write(f"alias {i}='{target}'\n")
 
 
 @click.command()
 @click.argument('alias', required=False)
 @click.argument('command', required=False, default=None)
+@click.option('--is-function', '-f', is_flag=True)
 @click.version_option(version=__version__)
-def main(alias, command):
+def main(alias, command, is_function):
     """
     Register aliases.
 
@@ -108,7 +117,7 @@ def main(alias, command):
     if not alias:
         msg = alie
     elif command:
-        alie.write(alias, command)
+        alie.write(alias, command, is_function=is_function)
         msg = click.style('CREATED ', fg='green') + f"{colored}='{command}'"
     elif alias in alie.read():
         alie.delete(alias)

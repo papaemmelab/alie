@@ -4,7 +4,7 @@
 [![travis badge][travis_badge]][travis_base]
 [![codecov badge][codecov_badge]][codecov_base]
 
-Register aliases with ease 👟
+Register aliases and functions with ease 👟
 
 ![alie usage][gif]
 
@@ -39,6 +39,12 @@ alie hello "echo hello world"
 Delete alias:
 
     alie hello
+
+Create new function:
+
+```bash
+alie -f say 'echo "$@"'
+```
 
 ## Contributing
 

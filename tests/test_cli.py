@@ -26,3 +26,10 @@ def test_main(tmpdir):
 
     result = runner.invoke(cli.main, ['hello'])
     assert 'not registered' in result.output
+
+    params = [f'say', 'echo "$@"', '-f']
+    result = runner.invoke(cli.main, params)
+    assert 'CREATED' in result.output
+
+    result = runner.invoke(cli.main, [])
+    assert 'function ' in result.output
