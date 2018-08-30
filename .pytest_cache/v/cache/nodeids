@@ -1,4 +1,0 @@
-[
-  "tests/test_cli.py::test_main",
-  "tests/test_version.py::test_version"
-]
