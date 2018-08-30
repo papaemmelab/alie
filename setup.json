@@ -11,7 +11,7 @@
     ],
     "entry_points": {
         "console_scripts": [
-            "alie=alie.cli:main"
+            "_alie=alie.cli:main"
         ]
     },
     "setup_requires": [

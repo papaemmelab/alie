@@ -17,7 +17,7 @@ Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
 
 from os.path import expanduser
 from os.path import join
-import subprocess
+from os import getenv
 import json
 
 import click
@@ -26,16 +26,33 @@ import slugify
 from alie import __version__
 
 
-class Aliaz:
+class Alie:
 
     """A class used to manage user specific configurations."""
 
-    settings_json = join(expanduser('~'), '.alie.json')
-    settings_aliases = join(expanduser('~'), '.alie')
+    _settings_json = join(expanduser('~'), '.alie.json')
+    _settings_aliases = join(expanduser('~'), '.alie')
 
     def __repr__(self):  # pragma: no cover
         """Show all configurations in `settings_json`."""
-        return f'Aliases({self.read()})'
+        items = list(self.read().items())
+        ret = click.style(f'[{len(items)} registered]', fg='green')
+        ret = click.style(f'\nalie {ret}\n\n', fg='cyan')
+
+        for i, j in items:
+            ret += click.style(f'\t{i}', fg='magenta') + f'={j}\n'
+
+        return ret
+
+    @property
+    def settings_json(self):
+        """Path to json file."""
+        return getenv('ALIE_JSON_PATH', self._settings_json)
+
+    @property
+    def settings_aliases(self):
+        """Path to aliases file."""
+        return getenv('ALIE_ALIASES_PATH', self._settings_aliases)
 
     def read(self):
         """Read settings.json."""
@@ -47,8 +64,9 @@ class Aliaz:
 
     def write(self, name, value):
         """Write key, value to settings.json."""
+        data = self.read()
+
         with open(self.settings_json, 'w') as f:
-            data = self.read()
             data[name] = value
             json.dump(data, f, indent=4, sort_keys=True)
 
@@ -57,8 +75,9 @@ class Aliaz:
 
     def delete(self, name):
         """Delete alias from settings.json."""
+        data = self.read()
+
         with open(self.settings_json, 'w') as f:
-            data = self.read()
             data.pop(name, None)
             json.dump(data, f, indent=4, sort_keys=True)
 
@@ -69,33 +88,33 @@ class Aliaz:
         """Write aliases and reload bash profile."""
         with open(self.settings_aliases, 'w') as f:
             for i, j in self.read().items():
-                f.write(f"alias {i}='{j}'")
-
-        command = ['bash', '-c', f'source {self.settings_aliases}']
-        subprocess.check_call(command)
+                f.write(f"alias {i}='{j}'\n")
 
 
 @click.command()
-@click.argument('alias', required=True)
+@click.argument('alias', required=False)
 @click.argument('command', required=False, default=None)
 @click.version_option(version=__version__)
 def main(alias, command):
     """
-    Register or remove aliases.
+    Register aliases.
 
-    add: alie hello 'echo hello'
-    remove: alie hello
-
-    Please add to your bash profile: `source ~/.alie`.
+    Pass no arguments to list aliases. Pass only the `ALIAS` to remove it.
     """
-    alie = Aliaz()
-    alias = slugify.slugify(alias, separator='_')
+    alie = Alie()
+    alias = slugify.slugify(alias or '', separator='_')
+    colored = click.style(f'{alias}', fg='magenta')
 
-    if command:
+    if not alias:
+        msg = alie
+    elif command:
         alie.write(alias, command)
-        msg = click.style(f'CREATED {alias}: ', fg='green')
-    else:
+        msg = click.style('CREATED ', fg='green') + f"{colored}='{command}'"
+    elif alias in alie.read():
         alie.delete(alias)
-        msg = click.style(f'REMOVED {alias}: ', fg='red')
+        msg = click.style('REMOVED ', fg='red') + colored
+        msg += f'. Use `unalias {alias}` to remove from this session.'
+    else:
+        msg = f'Cannot remove since alias {colored} not registered in alie.'
 
-    click.echo(msg + f"please run 'source {alie.settings_aliases}'. ")
+    click.echo(msg)

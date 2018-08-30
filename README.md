@@ -6,13 +6,27 @@
 
 Register aliases with ease 👟
 
-## Usage
+## Installation
+
+Install from pip:
+
+    pip install alie
 
 Add to your bash profile:
 
 ```bash
+# make sure aliases are updated after running _alie
+alie () { _alie "$@"; source ~/.alie }
+
+# load registered aliases on new shells
 source ~/.alie
 ```
+
+## Usage
+
+List aliases:
+
+    alie
 
 Create new alias:
 

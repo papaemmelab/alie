@@ -20,7 +20,7 @@ after_success:
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
-  user: "<REPLACE>"
+  user: "jsmedmar"
   password:
     secure: IM6rqsORg8OZmXSaSOOFlg4KtX78cJGTHmabQdnqTJyQWJucWY0W57RPZhc7wFRJHqoG5t7HITfS6PsZFX3jakujijjS93eQXFELS6okuQCnErE6MF56uZ0CbxooRdQshs28Oozm5MXotDDXkSoR87oYT5VRPolgVoy+7Unerc+PXpXpAZs49hvgvEUWmpce4EBmvma6FCsgv+uBsrCOKbCwtg+pO9Hu4vcynsLveOjPbCLA4+jXZPThKCFgNTZqLLcr069h4bcBxg/UQEnafTOHJsQodnMTMj97CXhLgNaAiAhBWGP49k6Wb/nhtcUHMMCY6XQtM5jp59Eivj8fmaVf2FTLvEQN+qRloOQlZxTZmW7hzt5Ne/AXDitAGdt+E0iOkUE/TrDKYHmEWyPpWyAO7X30MdOVK8ikKSpwczCxOjVrcxbwmq09xLqRDjcnrKNeBywz+886YIx2sVRR8eVz0NvBbW7VZpu06nAtarYP5LsDR92yc+xavJwOga/KKSygyzW8/dgqrr6UQ1SROrSlC6fTX+aQKhj/Z9gBZ10JxlsnpVWeEAlTYmyU2kX5FP/XILyqibNJsTD7FfexqjVaB5KbQNSy/JZ0HzneUPSttABTQ0KofDJqszRhcleN+3pIibeP17YkCARDPf26IV1ufmnWp6vlZfKjueyYqog=
   on:
