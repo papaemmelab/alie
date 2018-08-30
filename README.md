@@ -4,7 +4,7 @@
 [![travis badge][travis_badge]][travis_base]
 [![codecov badge][codecov_badge]][codecov_base]
 
-👟 register aliases with ease.
+Register aliases with ease 👟
 
 ## Usage
 
@@ -14,15 +14,15 @@ Add to your bash profile:
 source ~/.alie
 ```
 
-To create a new alias:
+Create new alias:
 
 ```bash
-alie -a hello -c "echo hello world"
+alie hello "echo hello world"
 ```
 
-To delete an alias:
+Delete alias:
 
-    alie -a hello
+    alie hello
 
 ## Contributing
 
