@@ -1,0 +1,28 @@
+language: python
+
+python:
+  - 3.6
+
+services:
+  - docker
+
+install:
+  - pip install -U codecov
+  - pip install tox
+
+script:
+  - tox
+
+after_success:
+  - codecov
+
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: <REPLACE>
+  password: <TO REPLACE THIS RUN `travis encrypt --add deploy.password`>
+  on:
+    tags: true
+    repo: jsmedmar/alie
+    python: 3.6
+    branch: master
