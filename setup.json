@@ -38,6 +38,6 @@
     "name": "alie",
     "test_suite": "tests",
     "long_description": "📘 learn more on `GitHub <https://github.com/jsmedmar/alie>`_!",
-    "description": "👟 register aliases with ease.",
+    "description": "👟 register aliases and functions with ease.",
     "url": "https://github.com/jsmedmar/alie"
 }
