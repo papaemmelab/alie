@@ -21,7 +21,9 @@ Add to your bash profile:
 alie () { _alie "$@"; source ~/.alie }
 
 # load registered aliases on new shells
-source ~/.alie
+if [ -f ~/.alie ]; then
+    source ~/.alie
+fi
 ```
 
 ## Usage
