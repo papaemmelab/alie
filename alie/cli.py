@@ -21,7 +21,6 @@ from os import getenv
 import json
 
 import click
-import slugify
 
 from alie import __version__
 
@@ -117,7 +116,6 @@ def main(alias, command, is_function):
     Pass no arguments to list aliases. Pass only the `ALIAS` to remove it.
     """
     alie = Alie()
-    alias = slugify.slugify(alias or '', separator='_')
     colored = click.style(f'{alias}', fg='magenta')
 
     if not alias:
