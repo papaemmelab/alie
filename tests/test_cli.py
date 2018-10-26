@@ -30,6 +30,11 @@ def test_main(tmpdir):
     result = runner.invoke(cli.main, params)
     assert 'CREATED' in result.output
 
+    params = [f'"clear console"', 'clear']
+    result = runner.invoke(cli.main, params)
+    assert 'CREATED' in result.output
+
     result = runner.invoke(cli.main, [])
     assert 'function ' in result.output
     assert 'say-message' in result.output
+    assert 'clear_console' in result.output
