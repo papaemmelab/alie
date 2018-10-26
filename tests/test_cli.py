@@ -1,8 +1,7 @@
 """alie cli tests."""
 
-from click.testing import CliRunner
 from os import environ
-import pytest
+from click.testing import CliRunner
 
 from alie import cli
 
@@ -27,9 +26,10 @@ def test_main(tmpdir):
     result = runner.invoke(cli.main, ['hello'])
     assert 'not registered' in result.output
 
-    params = [f'say', 'echo "$@"', '-f']
+    params = [f'say-message', 'echo "$@"', '-f']
     result = runner.invoke(cli.main, params)
     assert 'CREATED' in result.output
 
     result = runner.invoke(cli.main, [])
     assert 'function ' in result.output
+    assert 'say-message' in result.output
