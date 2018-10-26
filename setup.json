@@ -18,8 +18,7 @@
         "pytest-runner==2.11.1"
     ],
     "install_requires": [
-        "Click>=6.7",
-        "python-slugify>=1.0.22"
+        "Click>=6.7"
     ],
     "extras_require": {
         "test": [
