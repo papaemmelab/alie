@@ -18,7 +18,7 @@ Add to your bash profile:
 
 ```bash
 # make sure aliases are updated after running _alie
-alie () { _alie "$@"; source ~/.alie }
+alie () { _alie "$@"; source ~/.alie; }
 
 # load registered aliases on new shells
 if [ -f ~/.alie ]; then
